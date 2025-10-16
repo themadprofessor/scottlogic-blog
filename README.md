@@ -53,8 +53,17 @@ root named after your Scott Logic username. Within this you will need a set of f
 be obvious what needs changing. Then add yourself to `_data/authors.yml`, again using an existing author as a template.
 You will need to add
 
-- an entry under `authors`
+- an entry under `authors` with the following fields where _italic_ fields are required
+  - _name_
+  - _picture_
+  - author-summary
+  - twitter-url
+  - twitter-handle
+  - linkedin-url
+  - linkedin-handle
 - your username under `active-authors`
+
+If both _social_-url and _social_-handle are provided, _social_-url is used.
 
 Finally, if you performed a _sparse checkout_ as recommended, you will need to add directory `_posts` in the root of
 your local copy.
@@ -107,7 +116,7 @@ sudo apt-get install ruby2.3 ruby2.3-dev build-essential dh-autoreconf libxslt-d
 ```
 
 On Windows, if you use Chocolatey, simply run `choco install ruby` in a PowerShell instance
-with elevated priveleges. If you don't use Chocolatey, you can use [RubyInstaller][rubyinstaller]
+with elevated privileges. If you don't use Chocolatey, you can use [RubyInstaller][rubyinstaller]
 or see the Ruby website for [alternative ways to install Ruby][ruby-installation-instructions].
 You don't need to install any other dependencies on Windows at this stage.
 
@@ -150,18 +159,18 @@ bundle exec jekyll serve
 ```
 See [jekyll's docs](https://jekyllrb.com/docs/configuration/options/) for command line flags.
 
-The blog will then be available on [localhost:4000](http://localhost:4000).
+The blog will then be available on [localhost][localhost].
 
 If you are working on fixes or new features, and need to re-compile the scripts or SCSS, you can use these npm scripts:
 
 ```shell
-npm ci
-npm run scripts
-npm run style
+npm ci          # Install deps
+npm run scripts # Recompile scripts
+npm run style   # Recompile SCSS
 ```
 
-##### Useful Command Line Flags
-* `--livereload` - trigger a build on file change (excluding SCSS or JS) and refresh the brower once built
+##### Useful Command Line Flags for Jekyll
+* `--livereload` - trigger a build on file change (excluding SCSS or JS) and refresh the browser once built
 * `--incremental` - use the experimental incremental build mode which after the initial build, only builds changed files
 
 ### Running with Docker
@@ -171,7 +180,7 @@ Use a bash-compatible shell; Git bash on Windows should work fine.
 #### Install gem dependencies
 
 First, we output gem dependencies to directory `container_gem_cache` on the host machine. This is analogous to running
-"npm install" for an npm package:
+"npm install" for a npm package:
 
 ```shell
 ./shell/docker-gem-install.sh
