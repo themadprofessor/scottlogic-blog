@@ -37,7 +37,7 @@
               <div class="author-list-avatar">
                 {%- assign author = activeauthors[j][1] %}
                 {%- assign author-id = activeauthors[j][0] %}
-                {%- include author_picture.html %}
+                {%- include author_picture.html author=author %}
               </div>
               <div class="author-name">{{- activeauthors[j][1].name -}}</div>
               <div id="{{- author-id -}}-post-count" class="author-post-count"></div>
@@ -58,9 +58,9 @@
               class="{%- if a[1].name == currentAuthorName %}active-author {%- endif %}"
               href="{{- site.baseurl -}}/{{- a[0] -}}"
             >
-                {%- assign author = a[1] %}
-                {%- assign author-id = a[0] %}
-                {%- include author_picture.html %}
+              {%- assign author = a[1] %}
+              {%- assign author-id = a[0] %}
+              {%- include author_picture.html author=author %}
               <div class="author-name">{{- a[1].name -}}</div>
               <div id="{{- author-id -}}-post-count" class="author-post-count"></div>
             </a>
@@ -70,5 +70,6 @@
     {%- endif %}
   </div>
 </div>
-<script>{%- include post_counts.js %}</script>
-
+<script>
+  {%- include post_counts.js %}
+</script>
