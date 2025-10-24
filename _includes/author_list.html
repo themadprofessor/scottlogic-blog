@@ -13,9 +13,14 @@
         Create a map with one hash from the author's full name to their username
       {%- endcomment %}
       {%- if site.data.authors['active-authors'] contains a[0] %}
-        {%- assign activeauthors = activeauthors | push: a %}
+        {%- assign authorid = a[0] %}
+        {%- assign authorandcount = '' | split: ',' %}
+        {%- assign authorandcount = authorandcount | push: site.data.authorpostcounts[authorid][':post_count'] %}
+        {%- assign authorandcount = authorandcount | push: a %}
+        {%- assign activeauthors = activeauthors | push: authorandcount %}
       {%- endif %}
     {%- endfor %}
+    {%- assign = activeauthors = activeauthors | sort %}
     {%- assign pagesize_integer = 12 %}
     {%- assign pagecount = activeauthors | size | divided_by: pagesize_integer %}
     {%- assign remainder = activeauthors | size | modulo: pagesize_integer %}
@@ -32,15 +37,18 @@
           <div class="author-icon">
             <a
               class="{%- if activeauthors[j][1].name == currentAuthorName %}active-author {%- endif %}"
-              href="{{- site.baseurl -}}/{{- activeauthors[j][0] -}}"
+              href="{{- site.baseurl -}}/{{- activeauthors[j][1][0] -}}"
             >
               <div class="author-list-avatar">
-                {%- assign author = activeauthors[j][1] %}
-                {%- assign author-id = activeauthors[j][0] %}
+                {%- assign author = activeauthors[j][1][1] %}
+                {%- assign author-id = activeauthors[j][1][0] %}
                 {%- include author_picture.html author=author %}
               </div>
-              <div class="author-name">{{- activeauthors[j][1].name -}}</div>
-              <div id="{{- author-id -}}-post-count" class="author-post-count"></div>
+              <div class="author-name">{{- activeauthors[j][1][1].name -}}</div>
+              <div id="{{- author-id -}}-post-count" class="author-post-count">
+                {{- activeauthors[j][0] }}
+                Blog posts
+              </div>
             </a>
           </div>
         {%- endfor %}
@@ -56,12 +64,12 @@
           <div class="author-icon">
             <a
               class="{%- if a[1].name == currentAuthorName %}active-author {%- endif %}"
-              href="{{- site.baseurl -}}/{{- a[0] -}}"
+              href="{{- site.baseurl -}}/{{- a[1] -}}"
             >
-              {%- assign author = a[1] %}
-              {%- assign author-id = a[0] %}
+              {%- assign author = a[j][1][1] %}
+              {%- assign author-id = [j][1][0] %}
               {%- include author_picture.html author=author %}
-              <div class="author-name">{{- a[1].name -}}</div>
+              <div class="author-name">{{- a[j][1][1].name -}}</div>
               <div id="{{- author-id -}}-post-count" class="author-post-count"></div>
             </a>
           </div>
