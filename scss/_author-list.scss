@@ -11,6 +11,8 @@ $underline-height: 3px;
     scroll-marker-group: after;
     anchor-name: --carousel;
     margin-bottom: 3.25rem;
+    min-height: 25.3125rem;
+    max-height: 28rem;
 
     > .author-grid {
       display: grid;

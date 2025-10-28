@@ -25,7 +25,10 @@ class JsonGenerator < JekyllSupport::JekyllGenerator
             author_counts.default = 0
 
             author_data = @site.site_data["authors"]["authors"].keys.to_h { |author|
-                [author, { "post_count": author_counts[author] }]
+                [author, {post_count: author_counts[author],
+                    name: site.site_data["authors"]["authors"][author]["name"],
+                    picture: site.site_data["authors"]["authors"][author]["picture"],
+                    isActive: site.site_data["authors"]["active-authors"].include?(author)}]
             }
 
             file.content = author_data.to_json
