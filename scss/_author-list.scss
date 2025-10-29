@@ -25,10 +25,6 @@ $underline-height: 3px;
       scroll-snap-align: center;
       scroll-behavior: smooth;
     }
-
-    > .author-grid::scroll-marker:target-current {
-      background-color: colours.$black;
-    }
   }
 
   #scroll-marker-group {
@@ -50,6 +46,10 @@ $underline-height: 3px;
       height: 0.5rem;
       background-color: colours.$grey;
       border-radius: 50%;
+    }
+
+    .scroll-marker.active {
+      background-color: colours.$black;
     }
   }
 

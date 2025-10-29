@@ -66,7 +66,13 @@ function displayPage(pageNumber: number, authors: Author[]) {
   pageMarker.classList.add("scroll-marker");
   //pageMarker.href = `#${pageId}`;
   pageMarker.onclick = () => {
+    const scrollMarkers = pageSelector.querySelectorAll(".scroll-marker");
+    for (const marker of scrollMarkers)
+    {
+      marker.classList.remove("active");
+    }
     carouselPage.scrollIntoView({block: "nearest", inline: "nearest", behavior: "smooth"});
+    pageMarker.classList.add("active");
   };
 
   for (const author of authors) {
