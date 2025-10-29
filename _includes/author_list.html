@@ -1,7 +1,7 @@
 {%- assign currentAuthorName = include.currentAuthorName %}
 <div class="author-list cell">
   <h4>Authors</h4>
-  <div class="gallery">
+  <div class="gallery" id="author-carousel">
     {%- comment %}
       Create an array of maps to make the full name of authors the
       top level property. This is a workaround because it is not possible to sort
@@ -20,8 +20,6 @@
         {%- assign activeauthors = activeauthors | push: authorandcount %}
       {%- endif %}
     {%- endfor %}
-    {%- assign activeauthors = activeauthors | sort %}
-    {%- assign activeauthors = activeauthors | reverse %}
     {%- assign pagesize_integer = 12 %}
     {%- assign pagecount = activeauthors | size | divided_by: pagesize_integer %}
     {%- assign remainder = activeauthors | size | modulo: pagesize_integer %}
@@ -79,6 +77,3 @@
     {%- endif %}
   </div>
 </div>
-<script>
-  {%- include post_counts.js %}
-</script>
