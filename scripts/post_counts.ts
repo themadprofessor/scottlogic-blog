@@ -11,7 +11,7 @@ global.loadAuthorsList = () => {
 };
 
 /*
- * Sort by number of posts descending, TODO: then by name
+ * Sort by number of posts descending, then by name
  */
 function compareAuthor(a: Author, b: Author) {
   if (a.postCount > b.postCount) {
@@ -20,7 +20,7 @@ function compareAuthor(a: Author, b: Author) {
   if (a.postCount < b.postCount) {
     return 1;
   }
-  return 0;
+  return a.name.localeCompare(b.name);
 }
 
 function displayCarousel(authorList: Author[]) {
@@ -42,6 +42,11 @@ function displayCarousel(authorList: Author[]) {
   }
 
   if (remainder) {
+    const start = pageCount * pageSize;
+    const end = authorList.length;
+
+    const authorsForPage = authorList.slice(start, end);
+    displayPage(pageCount*pageCount, authorsForPage)
   }
 }
 
