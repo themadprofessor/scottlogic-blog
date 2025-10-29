@@ -30,9 +30,6 @@ function displayCarousel(authorList: Author[]) {
   const pageCount = Math.floor(authorList.length / pageSize);
   const remainder = authorList.length % pageSize;
 
-  const carouselDiv = document.getElementById("author-carousel");
-  if (carouselDiv?.innerHTML) carouselDiv.innerHTML = "";
-
   for (let i = 0; i < pageCount; i++) {
     const start = i * pageSize;
     const end = (i+1) * pageSize;
@@ -46,7 +43,7 @@ function displayCarousel(authorList: Author[]) {
     const end = authorList.length;
 
     const authorsForPage = authorList.slice(start, end);
-    displayPage(pageCount*pageCount, authorsForPage)
+    displayPage(pageCount + 1, authorsForPage)
   }
 }
 
@@ -56,11 +53,22 @@ function displayPage(pageNumber: number, authors: Author[]) {
     throw Error("Cannot find element with id: 'author-carousel'")
   }
   const carouselPage = carouselDiv.appendChild(document.createElement("div"));
-  carouselPage.id = `author-grid${pageNumber}`;
+  const pageId = `author-grid${pageNumber}`;
+  carouselPage.id = pageId;
   carouselPage.classList.add("cell");
   carouselPage.classList.add("author-grid");
 
-  
+  const pageSelector = document.getElementById("scroll-marker-group");
+  if (!pageSelector) {
+    throw Error("Cannot find element with id: 'scroll-marker-group'");
+  }
+  const pageMarker = pageSelector.appendChild(document.createElement("a"));
+  pageMarker.classList.add("scroll-marker");
+  //pageMarker.href = `#${pageId}`;
+  pageMarker.onclick = () => {
+    carouselPage.scrollIntoView({block: "nearest", inline: "nearest", behavior: "smooth"});
+  };
+
   for (const author of authors) {
     const authorIcon = carouselPage.appendChild(document.createElement("a"));
     authorIcon.classList.add("author-icon");

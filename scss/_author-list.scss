@@ -8,7 +8,6 @@ $underline-height: 3px;
     overflow: hidden;
     display: flex;
     scroll-snap-type: x mandatory;
-    scroll-marker-group: after;
     anchor-name: --carousel;
     margin-bottom: 3.25rem;
     min-height: 25.3125rem;
@@ -27,26 +26,12 @@ $underline-height: 3px;
       scroll-behavior: smooth;
     }
 
-    > .author-grid::scroll-marker {
-      content: "";
-      width: 0.5rem;
-      height: 0.5rem;
-      background-color: colours.$grey;
-      border-radius: 50%;
-    }
-
     > .author-grid::scroll-marker:target-current {
       background-color: colours.$black;
     }
   }
 
-  .gallery::scroll-marker-group {
-    position: absolute;
-    position-anchor: --carousel;
-    top: calc(anchor(bottom) + 1.125rem);
-    justify-self: anchor-center;
-    anchor-name: --marker-group;
-
+  #scroll-marker-group {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
@@ -58,6 +43,14 @@ $underline-height: 3px;
     border-radius: 2rem;
 
     background-color: #bfbfbf70;
+
+    .scroll-marker {
+      content: "";
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: colours.$grey;
+      border-radius: 50%;
+    }
   }
 
   a {
