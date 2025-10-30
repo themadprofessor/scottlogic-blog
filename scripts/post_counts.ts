@@ -62,8 +62,11 @@ function displayPage(pageNumber: number, authors: Author[]) {
   if (!pageSelector) {
     throw Error("Cannot find element with id: 'scroll-marker-group'");
   }
-  const pageMarker = pageSelector.appendChild(document.createElement("a"));
+  const pageMarker = pageSelector.appendChild(document.createElement("div"));
   pageMarker.classList.add("scroll-marker");
+  if (pageNumber == 0) {
+    pageMarker.classList.add("active");
+  }
   //pageMarker.href = `#${pageId}`;
   pageMarker.onclick = () => {
     const scrollMarkers = pageSelector.querySelectorAll(".scroll-marker");
