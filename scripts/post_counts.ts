@@ -1,4 +1,4 @@
-global.loadAuthorsList = () => {
+export function loadAuthorList() {
   fetch("/authors.json", {
     method: "GET",
     headers: { Accept: "application/json" },
@@ -7,8 +7,22 @@ global.loadAuthorsList = () => {
     .then((postCounts: Author[]) => {
       const activeAuthors = postCounts.filter((author) => author.isActive);
       displayCarousel(activeAuthors);
+      localStorage.setItem("activeAuthors", JSON.stringify(activeAuthors));
+      displayLetterFilter();
     });
-};
+}
+
+function loadAuthorListForLetter(letter: string) {
+  const activeAuthors: Author[] = JSON.parse(
+    localStorage.getItem("activeAuthors") ?? "",
+  );
+  const filteredAuthors = activeAuthors.filter(
+    (author) =>
+      author.name.charAt(0).toLocaleLowerCase() == letter.toLocaleLowerCase(),
+  );
+  clearCarousel();
+  displayCarousel(filteredAuthors);
+}
 
 /*
  * Sort by number of posts descending, then by name
@@ -32,7 +46,7 @@ function displayCarousel(authorList: Author[]) {
 
   for (let i = 0; i < pageCount; i++) {
     const start = i * pageSize;
-    const end = (i+1) * pageSize;
+    const end = (i + 1) * pageSize;
 
     const authorsForPage = authorList.slice(start, end);
     displayPage(i, authorsForPage);
@@ -43,14 +57,14 @@ function displayCarousel(authorList: Author[]) {
     const end = authorList.length;
 
     const authorsForPage = authorList.slice(start, end);
-    displayPage(pageCount + 1, authorsForPage)
+    displayPage(pageCount, authorsForPage);
   }
 }
 
 function displayPage(pageNumber: number, authors: Author[]) {
   const carouselDiv = document.getElementById("author-carousel");
   if (!carouselDiv) {
-    throw Error("Cannot find element with id: 'author-carousel'")
+    throw Error("Cannot find element with id: 'author-carousel'");
   }
   const carouselPage = carouselDiv.appendChild(document.createElement("div"));
   const pageId = `author-grid${pageNumber}`;
@@ -66,30 +80,30 @@ function displayPage(pageNumber: number, authors: Author[]) {
 }
 
 function displayAuthor(element: HTMLElement, author: Author) {
-   const authorIcon = element.appendChild(document.createElement("a"));
-    authorIcon.classList.add("author-icon");
-    authorIcon.href = `${author.authorId}`;
-    const avatar = authorIcon.appendChild(document.createElement("div"));
-    avatar.classList.add("author-list-avatar");
-    const image = avatar.appendChild(document.createElement("img"));
-    image.role = "presentation";
-    image.alt = author.name ?? "";
-    if (author.picture) {
-      image.src = `/${author.authorId}/${author.picture}`;
-    } else {
-      image.src = `/assets/avatar.png`;
-    }
+  const authorIcon = element.appendChild(document.createElement("a"));
+  authorIcon.classList.add("author-icon");
+  authorIcon.href = `${author.authorId}`;
+  const avatar = authorIcon.appendChild(document.createElement("div"));
+  avatar.classList.add("author-list-avatar");
+  const image = avatar.appendChild(document.createElement("img"));
+  image.role = "presentation";
+  image.alt = author.name ?? "";
+  if (author.picture) {
+    image.src = `/${author.authorId}/${author.picture}`;
+  } else {
+    image.src = `/assets/avatar.png`;
+  }
 
-    const name = authorIcon.appendChild(document.createElement("div"));
-    name.classList.add("author-name");
-    name.textContent = author.name;
+  const name = authorIcon.appendChild(document.createElement("div"));
+  name.classList.add("author-name");
+  name.textContent = author.name;
 
-    const postCountText = authorIcon.appendChild(document.createElement("div"));
-    postCountText.classList.add("author-post-count");
-    postCountText.textContent =
-      author.postCount == 1
-        ? `${author.postCount} Blog post`
-        : `${author.postCount} Blog posts`;
+  const postCountText = authorIcon.appendChild(document.createElement("div"));
+  postCountText.classList.add("author-post-count");
+  postCountText.textContent =
+    author.postCount == 1
+      ? `${author.postCount} Blog post`
+      : `${author.postCount} Blog posts`;
 }
 
 function addScrollMarker(targetElement: HTMLElement, pageNumber: number) {
@@ -104,19 +118,82 @@ function addScrollMarker(targetElement: HTMLElement, pageNumber: number) {
   }
   pageMarker.onclick = () => {
     const scrollMarkers = pageSelector.querySelectorAll(".scroll-marker");
-    for (const marker of scrollMarkers)
-    {
+    for (const marker of scrollMarkers) {
       marker.classList.remove("active");
     }
-    targetElement.scrollIntoView({block: "nearest", inline: "nearest", behavior: "smooth"});
+    targetElement.scrollIntoView({
+      block: "nearest",
+      inline: "nearest",
+      behavior: "smooth",
+    });
     pageMarker.classList.add("active");
   };
 }
 
+function clearCarousel() {
+  const carouselDiv = document.getElementById("author-carousel");
+  if (!carouselDiv) {
+    throw Error("Cannot find element with id: 'author-carousel'");
+  }
+  carouselDiv.innerHTML = "";
+  clearScrollMarkers();
+}
+
+function clearScrollMarkers() {
+  const pageSelector = document.getElementById("scroll-marker-group");
+  if (!pageSelector) {
+    throw Error("Cannot find element with id: 'scroll-marker-group'");
+  }
+  pageSelector.innerHTML = "";
+}
+
+function displayLetterFilter() {
+  for (const letter of alphabet) {
+    const authorDiv = document.getElementById("author-list");
+    if (!authorDiv) {
+      throw Error("Cannot find element with id: 'author-list'");
+    }
+    const aButton = authorDiv.appendChild(document.createElement("button"));
+    aButton.innerText = letter;
+    aButton.onclick = () => {
+      loadAuthorListForLetter(letter);
+    };
+  }
+}
+
+const alphabet = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
+
 interface Author {
-  name: string,
-  picture: string,
-  authorId: string,
-  postCount: number,
-  isActive: boolean
+  name: string;
+  picture: string;
+  authorId: string;
+  postCount: number;
+  isActive: boolean;
 }

@@ -59,5 +59,5 @@ export default defineConfig({
     ],
   },
   mode: isProd ? "production" : "development",
-  devtool: isProd ? false : "source-map",
+  devtool: "source-map",
 });
