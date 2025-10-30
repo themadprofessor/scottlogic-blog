@@ -58,28 +58,15 @@ function displayPage(pageNumber: number, authors: Author[]) {
   carouselPage.classList.add("cell");
   carouselPage.classList.add("author-grid");
 
-  const pageSelector = document.getElementById("scroll-marker-group");
-  if (!pageSelector) {
-    throw Error("Cannot find element with id: 'scroll-marker-group'");
-  }
-  const pageMarker = pageSelector.appendChild(document.createElement("div"));
-  pageMarker.classList.add("scroll-marker");
-  if (pageNumber == 0) {
-    pageMarker.classList.add("active");
-  }
-  //pageMarker.href = `#${pageId}`;
-  pageMarker.onclick = () => {
-    const scrollMarkers = pageSelector.querySelectorAll(".scroll-marker");
-    for (const marker of scrollMarkers)
-    {
-      marker.classList.remove("active");
-    }
-    carouselPage.scrollIntoView({block: "nearest", inline: "nearest", behavior: "smooth"});
-    pageMarker.classList.add("active");
-  };
+  addScrollMarker(carouselPage, pageNumber);
 
   for (const author of authors) {
-    const authorIcon = carouselPage.appendChild(document.createElement("a"));
+    displayAuthor(carouselPage, author);
+  }
+}
+
+function displayAuthor(element: HTMLElement, author: Author) {
+   const authorIcon = element.appendChild(document.createElement("a"));
     authorIcon.classList.add("author-icon");
     authorIcon.href = `${author.authorId}`;
     const avatar = authorIcon.appendChild(document.createElement("div"));
@@ -103,7 +90,27 @@ function displayPage(pageNumber: number, authors: Author[]) {
       author.postCount == 1
         ? `${author.postCount} Blog post`
         : `${author.postCount} Blog posts`;
+}
+
+function addScrollMarker(targetElement: HTMLElement, pageNumber: number) {
+  const pageSelector = document.getElementById("scroll-marker-group");
+  if (!pageSelector) {
+    throw Error("Cannot find element with id: 'scroll-marker-group'");
   }
+  const pageMarker = pageSelector.appendChild(document.createElement("button"));
+  pageMarker.classList.add("scroll-marker");
+  if (pageNumber == 0) {
+    pageMarker.classList.add("active");
+  }
+  pageMarker.onclick = () => {
+    const scrollMarkers = pageSelector.querySelectorAll(".scroll-marker");
+    for (const marker of scrollMarkers)
+    {
+      marker.classList.remove("active");
+    }
+    targetElement.scrollIntoView({block: "nearest", inline: "nearest", behavior: "smooth"});
+    pageMarker.classList.add("active");
+  };
 }
 
 interface Author {

@@ -4,6 +4,8 @@
 $underline-height: 3px;
 
 .author-list {
+  display: flex;
+  flex-direction: column;
   .gallery {
     overflow: hidden;
     display: flex;
@@ -30,6 +32,7 @@ $underline-height: 3px;
   #scroll-marker-group {
     display: flex;
     justify-content: center;
+    align-self: center;
     gap: 0.5rem;
 
     padding-top: 0.5rem;
@@ -39,6 +42,8 @@ $underline-height: 3px;
     border-radius: 2rem;
 
     background-color: #bfbfbf70;
+
+    width: fit-content;
 
     .scroll-marker {
       content: "";
