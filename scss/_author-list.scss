@@ -41,6 +41,7 @@ $underline-height: 3px;
     padding-right: 1rem;
     border-radius: 2rem;
 
+    // Its not clear how transparency fits into the color scheme
     background-color: #bfbfbf70;
 
     width: fit-content;
@@ -113,7 +114,7 @@ $underline-height: 3px;
     padding-bottom: 1rem;
     padding-top: 0.5rem;
     margin-bottom: 0.5rem;
-    border-top: 1px solid colors.$even-lighter-grey;
-    color: colos.$grey;
+    border-top: 1px solid colours.$even-lighter-grey;
+    color: colours.$grey;
   }
 }
