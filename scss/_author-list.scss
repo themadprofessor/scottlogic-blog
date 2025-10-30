@@ -104,4 +104,16 @@ $underline-height: 3px;
   .author-post-count {
     font-weight: fonts.$font-regular;
   }
+
+  #letter-group {
+    font-weight: fonts.$font-regular;
+    font-size: fonts.$baseFontSize * 0.375;
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-top: 1px solid #f2f2f2;
+    color: #767676;
+  }
 }

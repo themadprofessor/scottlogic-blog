@@ -7,8 +7,8 @@ export function loadAuthorList() {
     .then((postCounts: Author[]) => {
       const activeAuthors = postCounts.filter((author) => author.isActive);
       displayCarousel(activeAuthors);
+      displayLetterFilter(activeAuthors);
       localStorage.setItem("activeAuthors", JSON.stringify(activeAuthors));
-      displayLetterFilter();
     });
 }
 
@@ -147,17 +147,23 @@ function clearScrollMarkers() {
   pageSelector.innerHTML = "";
 }
 
-function displayLetterFilter() {
+function displayLetterFilter(authors: Author[]) {
   for (const letter of alphabet) {
-    const authorDiv = document.getElementById("author-list");
-    if (!authorDiv) {
-      throw Error("Cannot find element with id: 'author-list'");
+    if (
+      authors.find((author) =>
+        author.name.toLocaleLowerCase().startsWith(letter.toLocaleLowerCase()),
+      )
+    ) {
+      const letterGroup = document.getElementById("letter-group");
+      if (!letterGroup) {
+        throw Error("Cannot find element with id: 'letter-group'");
+      }
+      const aButton = letterGroup.appendChild(document.createElement("button"));
+      aButton.innerText = letter;
+      aButton.onclick = () => {
+        loadAuthorListForLetter(letter);
+      };
     }
-    const aButton = authorDiv.appendChild(document.createElement("button"));
-    aButton.innerText = letter;
-    aButton.onclick = () => {
-      loadAuthorListForLetter(letter);
-    };
   }
 }
 
