@@ -29,7 +29,7 @@ $underline-height: 3px;
     }
   }
 
-  #scroll-marker-group {
+  #scroll-marker-group:has(.scroll-marker) {
     display: flex;
     justify-content: center;
     align-self: center;
