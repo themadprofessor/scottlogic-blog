@@ -28,7 +28,9 @@
   </div>
   <div class="cell grid-x grid-margin-y">
     <div class="cell large-8">
-      {%- include_cached featured_posts.html categoryName=categoryName -%}
+      {%- if paginator.page < 2 -%}
+        {%- include_cached featured_posts.html categoryName=categoryName -%}
+      {%- endif -%}
       {%- include post_summary_list.html -%}
     </div>
     <div
