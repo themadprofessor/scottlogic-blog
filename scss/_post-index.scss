@@ -11,6 +11,7 @@
   h1,
   h2 {
     text-align: left;
+    width: fit-content;
   }
 
   h2 {
@@ -20,6 +21,7 @@
       font-weight: fonts.$font-regular;
       overflow: hidden;
       width: fit-content;
+      padding-right: 0.125em;
       :hover .div {
         background-color: colours.$teal;
       }
